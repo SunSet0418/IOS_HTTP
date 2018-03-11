@@ -7,12 +7,25 @@
 //
 
 import UIKit
+import Alamofire
 
 class ViewController: UIViewController {
 
+    let BaseURL = "http://192.168.219.100"
+    @IBOutlet weak var TextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        Alamofire.request("http://192.168.219.100:3000/test", method:.get).responseJSON { response in
+            let JSON = response.result.value as! NSDictionary
+            print(response.request)  // original URL request
+            print(response.response) // HTTP URL response
+            print(response.result.value)// result of response serialization
+            print(JSON["id"] as! String)
+            print(JSON["password"] as! String)
+            self.TextView.text = String(describing: JSON["id"] as! String)
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
